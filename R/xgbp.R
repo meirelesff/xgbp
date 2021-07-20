@@ -102,7 +102,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
         stats::setNames(levels(as.factor(dep)))
     ) %>%
     tidyr::pivot_longer(-c(..., {{ census_count }})) %>%
-    dplyr::rename(cat = "name", est = "value")
+    dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
 
   # Return
   return(res)

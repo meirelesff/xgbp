@@ -16,6 +16,7 @@ Imports:
     cli,
     dplyr,
     magrittr,
+    rlang,
     stats,
     tibble,
     tidyr,
