@@ -1,0 +1,16 @@
+Package: xgbp
+Title: Flexible and Fast Multilevel Regression with Poststratification
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Fernando", "Meireles", , "fmeireles@ufmg.br", c("aut", "cre"), c(ORCID = "0000-0002-7027-2058"))    
+    )
+Description: Provides a fast and flexible framework for multivel regression with poststratification (MrP) 
+    by combining Extreme Gradient Boosting (XGB) with traditional poststratification. Estimates can be
+    aggregated at different group-levels for both binomial and multinomial dependent variables.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    xgboost
