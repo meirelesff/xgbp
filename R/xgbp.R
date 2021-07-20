@@ -104,6 +104,22 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
     tidyr::pivot_longer(-c(..., {{ census_count }})) %>%
     dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
 
+  # Change 'res' class
+  class(res) <- c("xgbp", "tbl_df", "tbl", "data.frame")
+
   # Return
   return(res)
 }
+
+
+#' Test if a object have XGBP class
+#'
+#' @param obj An object
+#'
+#' @export
+
+is_xgbp <- function(obj) inherits(obj, "xgbp")
+
+
+
+

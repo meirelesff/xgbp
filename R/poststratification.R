@@ -15,6 +15,13 @@
 
 get_estimates <- function(xgbp_out, ...){
 
+  # Test input
+  if(!is_xgbp(xgbp_out)){
+
+    stop(cli::cli_alert("'xgbp_out' must be an object returned from the 'xgbp' function."))
+  }
+
+  # Aggregates and returns estimates
   xgbp_out %>%
     dplyr::group_by(rlang::.data$cat, ...) %>%
     dplyr::mutate(prop = {{ rlang::.data$n_count }} / sum({{ rlang::.data$n_count }})) %>%

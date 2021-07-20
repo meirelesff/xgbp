@@ -2,5 +2,6 @@
 
 export("%>%")
 export(get_estimates)
+export(is_xgbp)
 export(xgbp)
 importFrom(magrittr,"%>%")
