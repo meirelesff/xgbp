@@ -28,7 +28,7 @@
 #' encourage to increase this number to speed up computations (the limit is the actual number
 #' of threads available at your computer)
 #'
-#' @example
+#' @examples
 #' \dontrun{
 #' x <- xgbp(survey, census, var1, var2, dep_var = Y)
 #' }

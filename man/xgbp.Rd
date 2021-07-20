@@ -62,3 +62,9 @@ using Extreme Gradient Boosting (XGB). Dependent variables can be both binomial
 or multinomial and resulting estimates can be aggregate by the whole sample or
 by any group used in the estimation.
 }
+\examples{
+\dontrun{
+x <- xgbp(survey, census, var1, var2, dep_var = Y)
+}
+
+}
