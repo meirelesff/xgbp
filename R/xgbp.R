@@ -59,6 +59,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
   census <- census %>%
     tibble::as_tibble() %>%
     dplyr::ungroup() %>%
+    stats::na.omit() %>%
     dplyr::mutate(dplyr::across(c(...), .fns = as.factor))
 
   # Create xgb matrix with covars
