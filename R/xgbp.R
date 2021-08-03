@@ -99,7 +99,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
     dplyr::bind_cols(
 
       stats::predict(mod, newdata = est_mt, reshape = T) %>%
-        tibble::as_tibble() %>%
+        tibble::as_tibble(.name_repair = "minimal") %>%
         stats::setNames(levels(as.factor(dep)))
     ) %>%
     tidyr::pivot_longer(-c(..., {{ census_count }})) %>%
