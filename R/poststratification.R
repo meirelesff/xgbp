@@ -25,7 +25,7 @@ get_estimates <- function(xgbp_out, ...){
   # Aggregates and returns estimates
   xgbp_out %>%
     dplyr::group_by(.data$cat, ...) %>%
-    dplyr::mutate(prop = {{ .data$n_count }} / sum({{ .data$n_count }})) %>%
+    dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
     dplyr::summarise(estimativa = sum(.data$prop * .data$est, na.rm = T))
 }
 
