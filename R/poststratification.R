@@ -5,6 +5,8 @@
 #' @param xgbp_out A `xgbp` object returned by the \code{\link{xgbp}} function
 #' @param ... Group-level covars to aggregate results (leave blank for
 #' sample-level estimates)
+#' @param pivot Should the resuling table be pivoted to wider format? Defaults to
+#' `FALSE`
 #'
 #' @examples
 #' \dontrun{
@@ -14,7 +16,7 @@
 #' @importFrom rlang .data
 #' @export
 
-get_estimates <- function(xgbp_out, ...){
+get_estimates <- function(xgbp_out, ..., pivot = FALSE){
 
   # Test input
   if(!is_xgbp(xgbp_out)){
@@ -23,10 +25,20 @@ get_estimates <- function(xgbp_out, ...){
   }
 
   # Aggregates and returns estimates
-  xgbp_out %>%
+  res <- xgbp_out %>%
     dplyr::group_by(.data$cat, ...) %>%
     dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
-    dplyr::summarise(estimativa = sum(.data$prop * .data$est, na.rm = T))
+    dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T), .groups = "drop")
+
+  # Pivot table?
+  if(pivot){
+
+    res <- tidyr::pivot_wider(res, names_from = c(...),
+                              values_from = .data$estimate)
+  }
+
+  # Return
+  return(res)
 }
 
 
