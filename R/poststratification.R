@@ -11,6 +11,7 @@
 #' get_estimates(xgbp_out)
 #' }
 #'
+#' @importFrom rlang .data
 #' @export
 
 get_estimates <- function(xgbp_out, ...){
@@ -23,9 +24,9 @@ get_estimates <- function(xgbp_out, ...){
 
   # Aggregates and returns estimates
   xgbp_out %>%
-    dplyr::group_by(rlang::.data$cat, ...) %>%
-    dplyr::mutate(prop = {{ rlang::.data$n_count }} / sum({{ rlang::.data$n_count }})) %>%
-    dplyr::summarise(estimativa = sum(rlang::.data$prop * rlang::.data$est, na.rm = T))
+    dplyr::group_by(.data$cat, ...) %>%
+    dplyr::mutate(prop = {{ .data$n_count }} / sum({{ .data$n_count }})) %>%
+    dplyr::summarise(estimativa = sum(.data$prop * .data$est, na.rm = T))
 }
 
 
