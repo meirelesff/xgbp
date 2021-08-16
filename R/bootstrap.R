@@ -33,7 +33,7 @@ bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, v
     stop(cli::cli_alert("'boot_iter' must be NULL or integer."))
   }
 
-  if((is.numeric(ci_level) & ci_level > 0 & ci_level <= 1)){
+  if(!(is.numeric(ci_level) & ci_level > 0 & ci_level <= 1)){
 
     stop(cli::cli_alert("'ci_level' must be a numeric between 0 a 1."))
   }
