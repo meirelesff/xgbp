@@ -40,7 +40,8 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
       dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T), .groups = "drop") %>%
       dplyr::group_by(.data$cat, ...) %>%
       dplyr::summarise(up = stats::quantile(estimate, probs = 1 - ci_level),
-                       lo = stats::quantile(estimate, probs = ci_level))
+                       lo = stats::quantile(estimate, probs = ci_level)) %>%
+      dplyr::select(.data$up, .data$lo)
 
     res <- dplyr::bind_cols(res, cis)
   }
