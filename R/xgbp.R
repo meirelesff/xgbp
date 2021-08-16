@@ -27,6 +27,10 @@
 #' of threads available at your computer)
 #' @param verbose Should the function report messages along the estimation? Defaults to `TRUE`
 #'
+#' @return A list of class `xgbp` with the following items
+#' * `estimates` -- A `tibble` containing raw estimates by strata
+#' * `model` -- The trained `xgboost` model
+#'
 #' @examples
 #' \dontrun{
 #' # General use case
