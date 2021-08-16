@@ -133,7 +133,8 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
 
   # Create the output
   res <- list(estimates = res, model = mod, data = dados, nrounds = nrounds,
-              census = census, census_count = census_count, covars_matrix = est_mt,
+              census = census, #census_count = census_count,
+              covars_matrix = est_mt,
               covars = ..., dep_var = dep)
   class(res) <- c("xgbp")
 
