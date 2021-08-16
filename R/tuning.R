@@ -55,7 +55,7 @@ tune_xgbp <- function(survey, ..., dep_var = NULL, nrounds = 100, nthread = 1, n
     # Run cross-validation
     dplyr::mutate(model = purrr::map(.data$params,
                                      ~ xgboost::xgb.cv(params = .x,
-                                                       data = dados,
+                                                       data = survey,
                                                        early_stopping_rounds = 20,
                                                        nrounds = nrounds,
                                                        nthread = nthread,
