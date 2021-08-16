@@ -39,29 +39,15 @@ bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, v
   # Start boostraping
   if(verbose) cli::cli_progress_step("Bootstraping confidence intervals")
 
-  # Set seed
-  furrr::furrr_options(seed = seed)
-
   # Run bootstrap models
-  n_rows <- xgboost::getinfo(xgbp_out$data, name = "nrow")
-  boots <- 1:boot_iter %>%
-    furrr::future_map()
+  boots <- furrr::future_map(1:boot_iter, ~ iter_bootstrap(xgbp_out) %>%
+                               dplyr::mutate(id = .x),
+                             .options = furrr::furrr_options(seed = seed)) %>%
+    dplyr::bind_rows()
 
-
-  # Get estimates from bootstrap samples
-  furrr::future_map(boots,
-                    ~ census %>%
-                      dplyr::bind_cols(
-
-                        stats::predict(.x, newdata = est_mt, reshape = T) %>%
-                          tibble::as_tibble(.name_repair = "minimal") %>%
-                          stats::setNames(levels(as.factor(dep)))
-                      ) %>%
-                      tidyr::pivot_longer(-c(..., {{ census_count }})) %>%
-                      dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
-  )
-
-
+  # Change class and returns
+  class(boots) <- c("xgbp_boot")
+  return(boots)
 }
 
 
@@ -91,10 +77,14 @@ iter_bootstrap <- function(xgbp_out){
         stats::setNames(levels(as.factor(xgbp_out$dep_var)))
     ) %>%
     tidyr::pivot_longer(cats) %>%
-    dplyr::rename(cat = "name", est = "value", n_count = {{ xgbp_out$census_count }})
+    dplyr::rename(cat = "name", est = "value", n_count = xgbp_out$census_count)
 }
 
 
+#' Test if a object have XGBP boot class
+#'
+#' @param obj An object
+#'
+#' @export
 
-
-
+is_xgbp_boot <- function(obj) inherits(obj, "xgbp_boot")
