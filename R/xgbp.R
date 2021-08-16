@@ -52,7 +52,12 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   }
 
   # Set seed for reproducibility
-  if(verbose) cli::cli_rule("Poststratification with {cli::col_cyan('XGBP')}")
+  if(verbose){
+
+    d <- cli::cli_div(theme = list(rule = list("margin-bottom" = 1)))
+    cli::cli_rule("Poststratification with {cli::col_cyan('XGBP')}")
+    cli::cli_end(d)
+  }
   set.seed(seed)
 
   # Process census data and convert covars to factor
@@ -125,7 +130,6 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   class(res) <- c("xgbp", "tbl_df", "tbl", "data.frame")
 
   # Return
-  if(verbose) cli::cli_alert_success("Poststratification completed.")
   return(res)
 }
 
