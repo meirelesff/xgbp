@@ -34,6 +34,8 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
   # In case of bootstrap intervals
   if(is_xgbp_boot(xgbp_out)){
 
+    ci_level <- (1 - xgbp_out$ci_level) / 2
+
     cis <- xgbp_out$boots %>%
       dplyr::group_by(.data$id, .data$cat, ...) %>%
       dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
