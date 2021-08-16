@@ -52,9 +52,11 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   }
 
   # Set seed for reproducibility
+  if(verbose) cli::cli_rule("Poststratification with {cli::col_cyan('XGBP')}")
   set.seed(seed)
 
   # Process census data and convert covars to factor
+  if(verbose) cli::cli_progress_step("Data processing")
   census <- census %>%
     tibble::as_tibble() %>%
     dplyr::ungroup() %>%
@@ -81,7 +83,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   # Select parameters (tune, default or provided by user)
   if(tune){
 
-    if(verbose) cli::cli_alert_info("Tuning model parameters (may take a while)...")
+    if(verbose) cli::cli_progress_step("Tuning model parameters")
     res <- tune_xgbp(dados, ..., dep_var = dep, nrounds = nrounds,
                      nthread = nthread, n_iter = n_iter, seed = seed)
 
@@ -99,7 +101,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   }
 
   # Train the model
-  if(verbose) cli::cli_alert_info("Training the model...")
+  if(verbose) cli::cli_progress_step("Model training")
   mod <- xgboost::xgboost(data = dados,
                           params = params,
                           nrounds = nrounds,
@@ -108,6 +110,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
                           eval_metric = "mlogloss")
 
   # Produce estimates by census strata
+  if(verbose) cli::cli_progress_step("Generating estimates")
   res <- census %>%
     dplyr::bind_cols(
 
