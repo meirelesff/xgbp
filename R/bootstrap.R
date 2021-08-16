@@ -7,6 +7,7 @@
 #' @param boot_iter Number of bootstrap iterations used to estimate non-parametric
 #' confidence intervals. Defaults to `100`
 #' @param ci_level Level of confidence intervals. Defaults to `0.95` (95% CI)
+#' @param seed A seed for replication. Defaults to `NULL`
 #' @param verbose Should the function report messages along the estimation? Defaults to `TRUE`
 #'
 #' @details # Parallelization
@@ -16,7 +17,7 @@
 #' by declaring a plan using [future::plan()]. See below for an example of setting `multisession`
 #' parallelism.
 
-bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, verbose = TRUE){
+bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, verbose = TRUE){
 
 
   # Test inputs
@@ -69,16 +70,29 @@ iter_bootstrap <- function(xgbp_out){
 
 
   # Create matrix
+  n_rows <- xgboost::getinfo(xgbp_out$data, name = "nrow")
   data <- xgboost::slice(xgbp_out$data, sample(1:n_rows, n_rows, replace = TRUE))
 
-  # Train model
-  xgboost::xgboost(data = ,
-                   params = xgbp_out$model$params,
-                   nrounds = xgbp_out$nrounds,
-                   early_stopping_rounds = 20,
-                   verbose = 0)
+  # Train model and return
+  mod <- xgboost::xgboost(data = data,
+                          params = xgbp_out$model$params,
+                          nrounds = xgbp_out$nrounds,
+                          early_stopping_rounds = 20,
+                          verbose = 0)
 
+  # Get estimates and return
+  xgbp_out$census %>%
+    dplyr::bind_cols(
+
+      stats::predict(mod, newdata = xgbp_out$covars, reshape = T) %>%
+        tibble::as_tibble(.name_repair = "minimal") %>%
+        stats::setNames(levels(as.factor(xgbp_out$dep_var)))
+    ) %>%
+    tidyr::pivot_longer(-c(xgbp_out$covars, {{ xgbp_out$census_count }})) %>%
+    dplyr::rename(cat = "name", est = "value", n_count = {{ xgbp_out$census_count }})
 }
+
+
 
 
 
