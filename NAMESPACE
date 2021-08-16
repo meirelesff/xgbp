@@ -3,6 +3,7 @@
 export("%>%")
 export(get_estimates)
 export(is_xgbp)
+export(tune_xgbp)
 export(xgbp)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)

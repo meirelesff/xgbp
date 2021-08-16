@@ -15,30 +15,29 @@
 #' variables must be included in the `survey` and in the `census` and passed unquoted to
 #' the function call
 #' @param dep_var Dependent variable. Must be `character` or `factor`
-#' @param seed A seed for replication. Defaults to `44`
-#' @param max.depth XGB's max depth. Indicates the maximum depth of a tree. Defaults to `6`.
-#' @param eta XGB's step size shrinkage used in update to prevents overfitting. Defaults to `0.3`
-#' @param nrounds XGB's number of rounds for boosting. Defaults to `100`.
-#' @param subsample XGB's subsample ratio of the training instances. Defaults to `0.95`
-#' @param min_child_weight XGB's minimum sum of instance weight (hessian) needed in a child.
-#' Defaults to `0.9`
-#' @param early_stopping_rounds XGB's early stopping. Validation metric needs to improve at
-#' least once in every early_stopping_rounds round(s) to continue training. Defaults to `20`
+#' @param seed A seed for replication. Defaults to `NULL`
+#' @param tune Should the XGBP tune the parameters with randomized grid search? Defaults to `TRUE`, in which
+#' case `params` argument is ignored
+#' @param params A list of parameters to be passed to xgboost function
+#' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `100`
+#' @param n_iter When `tune = TRUE`, this indicates how many samples to draw
+#' during gridsearch to use. Defaults to `30`.
 #' @param nthread Number of htreads used in the computation. Defaults to `1`, but users are
 #' encourage to increase this number to speed up computations (the limit is the actual number
 #' of threads available at your computer)
+#' @param verbose Should the function report messages along the estimation? Defaults to `TRUE`
 #'
 #' @examples
 #' \dontrun{
-#' x <- xgbp(survey, census, var1, var2, dep_var = Y)
+#' # General use case
+#' ps <- xgbp(survey, census, var1, var2, dep_var = Y)
 #' }
 #'
 #' @export
 
-xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
-                 max.depth = 6, eta = 0.3, nrounds = 100,
-                 subsample = 0.95, min_child_weight = 0.9,
-                 early_stopping_rounds = 20, nthread = 1){
+xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
+                 seed = NULL, tune = TRUE, params = NULL, nrounds = 100,
+                 n_iter = 25, nthread = 1, verbose = TRUE){
 
 
   # Check inputs
@@ -79,17 +78,31 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
   dados <- xgboost::xgb.DMatrix(data = dados,
                                    label = as.numeric(as.factor(dep)) - 1) # XGB's count
 
+  # Select parameters (tune, default or provided by user)
+  if(tune){
+
+    if(verbose) cli::cli_alert_info("Tuning model parameters (may take a while)...")
+    res <- tune_xgbp(dados, ..., dados$dep, nrounds = nrounds,
+                     nthread = nthread, n_iter = n_iter, seed = seed)
+
+    params <- res$params
+    nrounds <- res$nrounds
+
+  } else if (is.null(params)) {
+
+    params <- list(objective = "multi:softprob",
+                   num_class = length(unique(dep)),
+                   max.depth = 6, eta = 0.3,
+                   subsample = 0.95,
+                   min_child_weight = 1,
+                   early_stopping_rounds = 20)
+  }
 
   # Train the model
+  if(verbose) cli::cli_alert_info("Training the model...")
   mod <- xgboost::xgboost(data = dados,
-                          objective = "multi:softprob",
-                          params = list(num_class = length(unique(dep))),
-                          max.depth = max.depth,
-                          eta = eta,
+                          params = params,
                           nrounds = nrounds,
-                          subsample = subsample,
-                          min_child_weight = min_child_weight,
-                          early_stopping_rounds = early_stopping_rounds,
                           nthread = nthread,
                           verbose = 0,
                           eval_metric = "mlogloss")
@@ -109,6 +122,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL, seed = 44,
   class(res) <- c("xgbp", "tbl_df", "tbl", "data.frame")
 
   # Return
+  if(verbose) cli::cli_alert_success("Poststratification completed.")
   return(res)
 }
 

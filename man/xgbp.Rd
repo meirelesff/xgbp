@@ -10,14 +10,13 @@ xgbp(
   census_count,
   ...,
   dep_var = NULL,
-  seed = 44,
-  max.depth = 6,
-  eta = 0.3,
+  seed = NULL,
+  tune = TRUE,
+  params = NULL,
   nrounds = 100,
-  subsample = 0.95,
-  min_child_weight = 0.9,
-  early_stopping_rounds = 20,
-  nthread = 1
+  n_iter = 25,
+  nthread = 1,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -36,25 +35,23 @@ the function call}
 
 \item{dep_var}{Dependent variable. Must be \code{character} or \code{factor}}
 
-\item{seed}{A seed for replication. Defaults to \code{44}}
+\item{seed}{A seed for replication. Defaults to \code{NULL}}
 
-\item{max.depth}{XGB's max depth. Indicates the maximum depth of a tree. Defaults to \code{6}.}
+\item{tune}{Should the XGBP tune the parameters with randomized grid search? Defaults to \code{TRUE}, in which
+case \code{params} argument is ignored}
 
-\item{eta}{XGB's step size shrinkage used in update to prevents overfitting. Defaults to \code{0.3}}
+\item{params}{A list of parameters to be passed to xgboost function}
 
-\item{nrounds}{XGB's number of rounds for boosting. Defaults to \code{100}.}
+\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{100}}
 
-\item{subsample}{XGB's subsample ratio of the training instances. Defaults to \code{0.95}}
-
-\item{min_child_weight}{XGB's minimum sum of instance weight (hessian) needed in a child.
-Defaults to \code{0.9}}
-
-\item{early_stopping_rounds}{XGB's early stopping. Validation metric needs to improve at
-least once in every early_stopping_rounds round(s) to continue training. Defaults to \code{20}}
+\item{n_iter}{When \code{tune = TRUE}, this indicates how many samples to draw
+during gridsearch to use. Defaults to \code{30}.}
 
 \item{nthread}{Number of htreads used in the computation. Defaults to \code{1}, but users are
 encourage to increase this number to speed up computations (the limit is the actual number
 of threads available at your computer)}
+
+\item{verbose}{Should the function report messages along the estimation? Defaults to \code{TRUE}}
 }
 \description{
 The package's main function, \code{xgbp} poststratify a survey response from a sample
@@ -64,7 +61,8 @@ by any group used in the estimation.
 }
 \examples{
 \dontrun{
-x <- xgbp(survey, census, var1, var2, dep_var = Y)
+# General use case
+ps <- xgbp(survey, census, var1, var2, dep_var = Y)
 }
 
 }

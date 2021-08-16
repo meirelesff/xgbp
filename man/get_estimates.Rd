@@ -4,13 +4,16 @@
 \alias{get_estimates}
 \title{Get estimates for XGBP}
 \usage{
-get_estimates(xgbp_out, ...)
+get_estimates(xgbp_out, ..., pivot = FALSE)
 }
 \arguments{
 \item{xgbp_out}{A \code{xgbp} object returned by the \code{\link{xgbp}} function}
 
 \item{...}{Group-level covars to aggregate results (leave blank for
 sample-level estimates)}
+
+\item{pivot}{Should the resuling table be pivoted to wider format? Defaults to
+\code{FALSE}}
 }
 \description{
 \code{get_estimates} aggregates and returns estimates from a XGBP object.
