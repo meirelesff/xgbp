@@ -31,13 +31,13 @@ tune_xgbp <- function(survey, ..., dep_var = NULL, nrounds = 100, nthread = 1, n
     eta = seq(0.001, 0.3, by = 0.05),
     max_depth = 2:7,
     gamma = 0:5,
+    num_class = length(unique(dep_var)),
     min_child_weight = seq(1, 9, by = 1),
     subsample = seq(0.8, 1, by = 0.05)
   ) %>%
     dplyr::slice_sample(n = n_iter)
 
   # Create parameters list and run 5-fold CV in each
-  num_class <- length(unique(survey$adpi1))
   best_params <- mod_grid %>%
     dplyr::rowwise() %>%
     # Create list of parameters

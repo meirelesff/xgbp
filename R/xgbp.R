@@ -58,7 +58,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   census <- census %>%
     tibble::as_tibble() %>%
     dplyr::ungroup() %>%
-    stats::na.omit() %>%
+    stats::na.omit() %>% # Remove missings
     dplyr::mutate(dplyr::across(c(...), .fns = as.factor))
 
   # Create xgb matrix with covars
@@ -82,7 +82,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   if(tune){
 
     if(verbose) cli::cli_alert_info("Tuning model parameters (may take a while)...")
-    res <- tune_xgbp(dados, ..., dados$dep, nrounds = nrounds,
+    res <- tune_xgbp(dados, ..., dep, nrounds = nrounds,
                      nthread = nthread, n_iter = n_iter, seed = seed)
 
     params <- res$params
