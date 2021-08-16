@@ -47,7 +47,8 @@ bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, verbose = TRUE
     dplyr::bind_rows()
 
   # Change class and returns
-  class(boots) <- c(class(boots), "xgbp_boot")
+  res <- list(estimates = xgbp_out$estimates, boots = boots, ci_level = ci_level)
+  class(res) <- c("xgbp_boot")
   return(boots)
 }
 
