@@ -58,7 +58,14 @@ A list of class \code{xgbp} with the following items
 \itemize{
 \item \code{estimates} -- A \code{tibble} containing raw estimates by strata
 \item \code{model} -- The trained \code{xgboost} model
-\item 
+\item \code{data} -- GBP datamatrix used to train the model
+\item \code{nrounds} -- Number of rounds used to train the model
+\item \code{census} -- Census data used to poststratify results
+\item \code{census_count} -- Variable in the \code{census} object indicanting the raw number
+or proportion of individuals in a given stratum
+\item \code{covars_matrix} -- GBP matrix with covars used to train the model
+\item \code{dep_var} -- Dependent variable (target)
+\item \code{seed} -- Seed used to reproduce results
 }
 }
 \description{

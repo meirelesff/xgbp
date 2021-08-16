@@ -4,13 +4,7 @@
 \alias{bootstrap}
 \title{Calculate bootstrap confidence intervals for XGBP}
 \usage{
-bootstrap(
-  xgbp_out,
-  boot_iter = 100,
-  ci_level = 0.95,
-  seed = NULL,
-  verbose = TRUE
-)
+bootstrap(xgbp_out, boot_iter = 100, ci_level = 0.95, verbose = TRUE)
 }
 \arguments{
 \item{xgbp_out}{A \code{xgbp} object returned by the \code{\link{xgbp}} function}
@@ -19,8 +13,6 @@ bootstrap(
 confidence intervals. Defaults to \code{100}}
 
 \item{ci_level}{Level of confidence intervals. Defaults to \code{0.95} (95\% CI)}
-
-\item{seed}{A seed for replication. Defaults to \code{NULL}}
 
 \item{verbose}{Should the function report messages along the estimation? Defaults to \code{TRUE}}
 }

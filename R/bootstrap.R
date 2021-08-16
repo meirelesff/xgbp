@@ -7,7 +7,6 @@
 #' @param boot_iter Number of bootstrap iterations used to estimate non-parametric
 #' confidence intervals. Defaults to `100`
 #' @param ci_level Level of confidence intervals. Defaults to `0.95` (95% CI)
-#' @param seed A seed for replication. Defaults to `NULL`
 #' @param verbose Should the function report messages along the estimation? Defaults to `TRUE`
 #'
 #' @details # Parallelization
@@ -19,7 +18,7 @@
 #'
 #' @export
 
-bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, verbose = TRUE){
+bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, verbose = TRUE){
 
 
   # Test inputs
@@ -44,11 +43,11 @@ bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, v
   # Run bootstrap models
   boots <- furrr::future_map(1:boot_iter, ~ iter_bootstrap(xgbp_out) %>%
                                dplyr::mutate(id = .x),
-                             .options = furrr::furrr_options(seed = seed)) %>%
+                             .options = furrr::furrr_options(seed = xgbp_out$seed)) %>%
     dplyr::bind_rows()
 
   # Change class and returns
-  class(boots) <- c("xgbp_boot")
+  class(boots) <- c(class(boots), "xgbp_boot")
   return(boots)
 }
 

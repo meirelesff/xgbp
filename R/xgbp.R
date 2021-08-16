@@ -30,7 +30,14 @@
 #' @return A list of class `xgbp` with the following items
 #' * `estimates` -- A `tibble` containing raw estimates by strata
 #' * `model` -- The trained `xgboost` model
-#' *
+#' * `data` -- GBP datamatrix used to train the model
+#' * `nrounds` -- Number of rounds used to train the model
+#' * `census` -- Census data used to poststratify results
+#' * `census_count` -- Variable in the `census` object indicanting the raw number
+#' or proportion of individuals in a given stratum
+#' * `covars_matrix` -- GBP matrix with covars used to train the model
+#' * `dep_var` -- Dependent variable (target)
+#' * `seed` -- Seed used to reproduce results
 #'
 #' @examples
 #' \dontrun{
@@ -134,7 +141,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   # Create the output
   res <- list(estimates = res, model = mod, data = dados, nrounds = nrounds,
               census = census, census_count = rlang::quo_name(rlang::enquo(census_count)),
-              covars_matrix = est_mt, dep_var = dep)
+              covars_matrix = est_mt, dep_var = dep, seed = seed)
   class(res) <- c("xgbp")
 
   # Return
