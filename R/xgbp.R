@@ -101,8 +101,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
                    num_class = length(unique(dep)),
                    max.depth = 6, eta = 0.3,
                    subsample = 0.95,
-                   min_child_weight = 1,
-                   early_stopping_rounds = 20)
+                   min_child_weight = 1)
   }
 
   # Train the model
@@ -111,6 +110,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
                           params = params,
                           nrounds = nrounds,
                           nthread = nthread,
+                          early_stopping_rounds = 20,
                           verbose = 0,
                           eval_metric = "mlogloss")
 
