@@ -81,6 +81,8 @@ iter_bootstrap <- function(xgbp_out){
                           verbose = 0)
 
   # Get estimates and return
+  cats <- unique(xgbp_out$dep_var)
+
   xgbp_out$census %>%
     dplyr::bind_cols(
 
@@ -88,7 +90,7 @@ iter_bootstrap <- function(xgbp_out){
         tibble::as_tibble(.name_repair = "minimal") %>%
         stats::setNames(levels(as.factor(xgbp_out$dep_var)))
     ) %>%
-    tidyr::pivot_longer(-c(xgbp_out$covars, {{ xgbp_out$census_count }})) %>%
+    tidyr::pivot_longer(cats) %>%
     dplyr::rename(cat = "name", est = "value", n_count = {{ xgbp_out$census_count }})
 }
 
