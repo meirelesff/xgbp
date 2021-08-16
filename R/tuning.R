@@ -78,5 +78,5 @@ tune_xgbp <- function(survey, ..., dep_var = NULL, nrounds = 100, nthread = 1, n
   nrounds <- best_params$iteration
 
   # Return
-  return(list(params = params, nround = nrounds))
+  return(list(params = params, nrounds = nrounds))
 }
