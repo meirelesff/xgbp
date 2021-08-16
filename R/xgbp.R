@@ -2,7 +2,7 @@
 #'
 #' The package's main function, `xgbp` poststratify a survey response from a sample
 #' using Extreme Gradient Boosting (XGB). Dependent variables can be both binomial
-#' or multinomial and resulting estimates can be aggregate by the whole sample or
+#' or multinomial and resulting estimates can be aggregated by the full sample or
 #' by any group used in the estimation.
 #'
 #' @param survey A survey sample containing the variables to use in the poststratification.
@@ -30,6 +30,7 @@
 #' @return A list of class `xgbp` with the following items
 #' * `estimates` -- A `tibble` containing raw estimates by strata
 #' * `model` -- The trained `xgboost` model
+#' *
 #'
 #' @examples
 #' \dontrun{
@@ -131,7 +132,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
 
   # Create the output
-  res <- list(estimates = res, model = mod)
+  res <- list(estimates = res, model = mod, data = dados, nrounds = nrounds)
   class(res) <- c("xgbp")
 
   # Return

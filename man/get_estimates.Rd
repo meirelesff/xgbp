@@ -4,7 +4,7 @@
 \alias{get_estimates}
 \title{Get estimates for XGBP}
 \usage{
-get_estimates(xgbp_out, ..., pivot = FALSE)
+get_estimates(xgbp_out, ..., pivot = FALSE, boot_iter = NULL, ci_level = 0.95)
 }
 \arguments{
 \item{xgbp_out}{A \code{xgbp} object returned by the \code{\link{xgbp}} function}
@@ -14,10 +14,23 @@ sample-level estimates)}
 
 \item{pivot}{Should the resuling table be pivoted to wider format? Defaults to
 \code{FALSE}}
+
+\item{boot_iter}{Number of bootstrap iterations used to estimate non-parametric
+confidence intervals. Defaults to \code{NULL}, in which case bootstrap is not performed}
+
+\item{ci_level}{Level of confidence intervals. Defaults to \code{0.95} (95\% CI) and
+is used only if \code{boot_iter} is set}
 }
 \description{
 \code{get_estimates} aggregates and returns estimates from a XGBP object.
 }
+\section{Parallelization}{
+\code{get_estimates} uses \code{furrr}'s \code{\link[furrr:future_map]{furrr::future_map()}} to perform bootstrap iterations.
+By default, computation is done sequentially, but users can take advantage of parallelism
+by declaring a plan using \code{\link[future:plan]{future::plan()}}. See below for an example of setting \code{multisession}
+parallelism.
+}
+
 \examples{
 \dontrun{
 get_estimates(xgbp_out)

@@ -53,10 +53,18 @@ of threads available at your computer)}
 
 \item{verbose}{Should the function report messages along the estimation? Defaults to \code{TRUE}}
 }
+\value{
+A list of class \code{xgbp} with the following items
+\itemize{
+\item \code{estimates} -- A \code{tibble} containing raw estimates by strata
+\item \code{model} -- The trained \code{xgboost} model
+\item 
+}
+}
 \description{
 The package's main function, \code{xgbp} poststratify a survey response from a sample
 using Extreme Gradient Boosting (XGB). Dependent variables can be both binomial
-or multinomial and resulting estimates can be aggregate by the whole sample or
+or multinomial and resulting estimates can be aggregated by the full sample or
 by any group used in the estimation.
 }
 \examples{
