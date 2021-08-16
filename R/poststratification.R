@@ -39,10 +39,12 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
     cis <- xgbp_out$boots %>%
       dplyr::group_by(.data$id, .data$cat, ...) %>%
       dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
-      dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T), .groups = "drop") %>%
+      dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T),
+                       .groups = "drop") %>%
       dplyr::group_by(.data$cat, ...) %>%
-      dplyr::summarise(up = stats::quantile(estimate, probs = 1 - ci_level),
-                       lo = stats::quantile(estimate, probs = ci_level)) %>%
+      dplyr::summarise(up = stats::quantile(.data$estimate, probs = 1 - ci_level),
+                       lo = stats::quantile(.data$estimate, probs = ci_level)) %>%
+      dplyr::ungroup() %>%
       dplyr::select(.data$up, .data$lo)
 
     res <- dplyr::bind_cols(res, cis)
