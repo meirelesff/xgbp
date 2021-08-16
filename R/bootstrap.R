@@ -16,6 +16,8 @@
 #' By default, computation is done sequentially, but users can take advantage of parallelism
 #' by declaring a plan using [future::plan()]. See below for an example of setting `multisession`
 #' parallelism.
+#'
+#' @export
 
 bootstrap <- function(xgbp_out, boot_iter = 100, ci_level = 0.95, seed = NULL, verbose = TRUE){
 
@@ -76,7 +78,7 @@ iter_bootstrap <- function(xgbp_out){
         tibble::as_tibble(.name_repair = "minimal") %>%
         stats::setNames(levels(as.factor(xgbp_out$dep_var)))
     ) %>%
-    tidyr::pivot_longer(cats) %>%
+    tidyr::pivot_longer(dplyr::all_of(cats)) %>%
     dplyr::rename(cat = "name", est = "value", n_count = xgbp_out$census_count)
 }
 
