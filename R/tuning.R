@@ -48,7 +48,6 @@ tune_xgbp <- function(survey, ..., dep_var = NULL, nrounds = 100, nthread = 1, n
       eta = .data$eta,
       max_depth = .data$max_depth,
       gamma = .data$gamma,
-      num_class = .data$num_class,
       min_child_weight = .data$min_child_weight,
       subsample = .data$subsample
     ))) %>%
