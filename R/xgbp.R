@@ -126,8 +126,9 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     tidyr::pivot_longer(-c(..., {{ census_count }})) %>%
     dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
 
-  # Change 'res' class
-  class(res) <- c("xgbp", "tbl_df", "tbl", "data.frame")
+  # Create the output
+  res <- list(estimates = res, model = mod)
+  class(res) <- c("xgbp")
 
   # Return
   return(res)

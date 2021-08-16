@@ -26,6 +26,7 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
 
   # Aggregates and returns estimates
   res <- xgbp_out %>%
+    purrr::pluck("estimates") %>%
     dplyr::group_by(.data$cat, ...) %>%
     dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
     dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T), .groups = "drop")
