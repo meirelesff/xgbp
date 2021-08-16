@@ -7,19 +7,6 @@
 #' sample-level estimates)
 #' @param pivot Should the resuling table be pivoted to wider format? Defaults to
 #' `FALSE`
-#' @param boot_iter Number of bootstrap iterations used to estimate non-parametric
-#' confidence intervals. Defaults to `NULL`, in which case bootstrap is not performed.
-#' For most applications, 100 up to 200 iterations should be enough to produce appropriate
-#' confidence intervals for XGBP
-#' @param ci_level Level of confidence intervals. Defaults to `0.95` (95% CI) and
-#' is used only if `boot_iter` is set
-#'
-#' @details # Parallelization
-#'
-#' `get_estimates` uses `furrr`'s [furrr::future_map()] to perform bootstrap iterations.
-#' By default, computation is done sequentially, but users can take advantage of parallelism
-#' by declaring a plan using [future::plan()]. See below for an example of setting `multisession`
-#' parallelism.
 #'
 #' @examples
 #' \dontrun{
@@ -29,28 +16,13 @@
 #' @importFrom rlang .data
 #' @export
 
-get_estimates <- function(xgbp_out, ...,
-                          pivot = FALSE,
-                          boot_iter = NULL,
-                          ci_level = 0.95){
+get_estimates <- function(xgbp_out, ..., pivot = FALSE){
 
-  # Test inputs
+  # Test input
   if(!is_xgbp(xgbp_out)){
 
     stop(cli::cli_alert("'xgbp_out' must be an object returned by the 'xgbp' function."))
   }
-
-  if(!(is.null(boot_iter) | is.numeric(boot_iter))){
-
-    stop(cli::cli_alert("'boot_iter' must be NULL or integer."))
-  }
-
-  if((is.numeric(ci_level) & ci_level > 0 & ci_level <= 1)){
-
-    stop(cli::cli_alert("'ci_level' must be a numeric between 0 a 1."))
-  }
-
-
 
   # Aggregates and returns estimates
   res <- xgbp_out %>%
@@ -69,5 +41,6 @@ get_estimates <- function(xgbp_out, ...,
   # Return
   return(res)
 }
+
 
 
