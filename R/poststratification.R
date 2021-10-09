@@ -38,7 +38,7 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
 
     cis <- xgbp_out$boots %>%
       dplyr::group_by(.data$id, .data$cat, ...) %>%
-      dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
+      dplyr::mutate(prop = as.numeric(.data$n_count) / sum(as.numeric(.data$n_count))) %>%
       dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T),
                        .groups = "drop") %>%
       dplyr::group_by(.data$cat, ...) %>%
