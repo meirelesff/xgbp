@@ -28,7 +28,7 @@ get_estimates <- function(xgbp_out, ..., pivot = FALSE){
   res <- xgbp_out %>%
     purrr::pluck("estimates") %>%
     dplyr::group_by(.data$cat, ...) %>%
-    dplyr::mutate(prop = .data$n_count / sum(.data$n_count)) %>%
+    dplyr::mutate(prop = as.numeric(.data$n_count) / as.numeric(sum(.data$n_count))) %>%
     dplyr::summarise(estimate = sum(.data$prop * .data$est, na.rm = T), .groups = "drop")
 
   # In case of bootstrap intervals
