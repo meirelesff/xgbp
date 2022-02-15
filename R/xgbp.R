@@ -78,7 +78,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     tibble::as_tibble() %>%
     dplyr::ungroup() %>%
     stats::na.omit() %>% # Remove missings
-    dplyr::mutate(dplyr::across(c(...), .fns = as.factor))
+    dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), .fns = as.factor))
 
   # Create xgb matrix with covars
   fml <- stats::as.formula(~ .)
@@ -93,7 +93,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
 
   # Create xgb matrix to train the model
   dados <- stats::model.matrix(fml, data = dplyr::select(survey, ...) %>%
-                                 dplyr::mutate(dplyr::across(.fns = as.factor)))
+                                 dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), .fns = as.factor)))
   dados <- xgboost::xgb.DMatrix(data = dados,
                                    label = as.numeric(as.factor(dep)) - 1) # XGB's count
 
