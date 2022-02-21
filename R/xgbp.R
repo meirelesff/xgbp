@@ -77,6 +77,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   census <- census %>%
     tibble::as_tibble() %>%
     dplyr::ungroup() %>%
+    dplyr::select(c(..., {{ census_count }})) %>%
     stats::na.omit() %>% # Remove missings
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), .fns = as.factor))
 
