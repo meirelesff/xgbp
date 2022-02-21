@@ -79,7 +79,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     dplyr::ungroup() %>%
     dplyr::select(c(..., {{ census_count }})) %>%
     stats::na.omit() %>% # Remove missings
-    dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.factor), .fns = as.character)) # Restora levels
+    dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.factor), .fns = as.character)) %>% # Restora levels
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), .fns = as.factor))
 
   # Create xgb matrix with covars
