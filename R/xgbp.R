@@ -21,7 +21,7 @@
 #' @param params A list of parameters to be passed to xgboost function
 #' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `120`
 #' @param n_iter When `tune = TRUE`, this indicates how many samples to draw
-#' during gridsearch to use. Defaults to `3` (increase this number in sensitive projects).
+#' during gridsearch to use. Defaults to `8` (increase this number in sensitive projects).
 #' @param nthread Number of htreads used in the computation. Defaults to `1`, but users are
 #' encourage to increase this number to speed up computations (the limit is the actual number
 #' of threads available at your computer)
@@ -49,7 +49,7 @@
 
 xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
                  seed = NULL, tune = TRUE, params = NULL, nrounds = 120,
-                 n_iter = 3, nthread = 1, verbose = TRUE){
+                 n_iter = 8, nthread = 1, verbose = TRUE){
 
 
   # Check inputs
