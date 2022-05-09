@@ -3,6 +3,7 @@
 export("%>%")
 export(bootstrap)
 export(get_estimates)
+export(get_estimates2)
 export(is_xgbp)
 export(is_xgbp_boot)
 export(tune_xgbp)

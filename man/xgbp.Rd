@@ -13,8 +13,8 @@ xgbp(
   seed = NULL,
   tune = TRUE,
   params = NULL,
-  nrounds = 100,
-  n_iter = 25,
+  nrounds = 120,
+  n_iter = 8,
   nthread = 1,
   verbose = TRUE
 )
@@ -42,10 +42,10 @@ case \code{params} argument is ignored}
 
 \item{params}{A list of parameters to be passed to xgboost function}
 
-\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{100}}
+\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{120}}
 
 \item{n_iter}{When \code{tune = TRUE}, this indicates how many samples to draw
-during gridsearch to use. Defaults to \code{30}.}
+during gridsearch to use. Defaults to \code{8} (increase this number in sensitive projects).}
 
 \item{nthread}{Number of htreads used in the computation. Defaults to \code{1}, but users are
 encourage to increase this number to speed up computations (the limit is the actual number
