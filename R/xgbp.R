@@ -15,13 +15,13 @@
 #' variables must be included in the `survey` and in the `census` and passed unquoted to
 #' the function call
 #' @param dep_var Dependent variable. Must be `character` or `factor`
-#' @param seed A seed for replication. Defaults to `NULL`
+#' @param seed A seed for replication. Defaults to `44`
 #' @param tune Should the XGBP tune the parameters with randomized grid search? Defaults to `TRUE`, in which
 #' case `params` argument is ignored
 #' @param params A list of parameters to be passed to xgboost function
-#' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `120`
+#' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `100`
 #' @param n_iter When `tune = TRUE`, this indicates how many samples to draw
-#' during gridsearch to use. Defaults to `8` (increase this number in sensitive projects).
+#' during gridsearch to use. Defaults to `10` (increase this number in sensitive surveys).
 #' @param nthread Number of htreads used in the computation. Defaults to `1`, but users are
 #' encourage to increase this number to speed up computations (the limit is the actual number
 #' of threads available at your computer)
@@ -48,8 +48,8 @@
 #' @export
 
 xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
-                 seed = NULL, tune = TRUE, params = NULL, nrounds = 120,
-                 n_iter = 8, nthread = 1, verbose = TRUE){
+                 seed = 44, tune = TRUE, params = NULL, nrounds = 100,
+                 n_iter = 10, nthread = 1, verbose = TRUE){
 
 
   # Check inputs
