@@ -19,7 +19,7 @@
 #' @param tune Should the XGBP tune the parameters with randomized grid search? Defaults to `FALSE`, in which
 #' case `params` argument is used
 #' @param params A list of parameters to be passed to xgboost function
-#' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `100`
+#' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `80`
 #' @param nrounds_final Number of trees (rounds) used in to train the final model. Defaults to `500`
 #' @param n_iter When `tune = TRUE`, this indicates how many samples to draw
 #' during gridsearch to use. Defaults to `25` (increase this number in sensitive surveys).
@@ -50,7 +50,7 @@
 #' @export
 
 xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
-                 seed = 44, tune = FALSE, params = NULL, nrounds = 100,
+                 seed = 44, tune = FALSE, params = NULL, nrounds = 80,
                  nrounds_final = 500, n_iter = 25, nthread = 1, verbose = TRUE){
 
 
