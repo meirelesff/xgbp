@@ -10,11 +10,12 @@ xgbp(
   census_count,
   ...,
   dep_var = NULL,
-  seed = NULL,
-  tune = TRUE,
+  seed = 44,
+  tune = FALSE,
   params = NULL,
-  nrounds = 120,
-  n_iter = 8,
+  nrounds = 100,
+  nrounds_final = 500,
+  n_iter = 25,
   nthread = 1,
   verbose = TRUE
 )
@@ -35,17 +36,19 @@ the function call}
 
 \item{dep_var}{Dependent variable. Must be \code{character} or \code{factor}}
 
-\item{seed}{A seed for replication. Defaults to \code{NULL}}
+\item{seed}{A seed for replication. Defaults to \code{44}}
 
-\item{tune}{Should the XGBP tune the parameters with randomized grid search? Defaults to \code{TRUE}, in which
-case \code{params} argument is ignored}
+\item{tune}{Should the XGBP tune the parameters with randomized grid search? Defaults to \code{FALSE}, in which
+case \code{params} argument is used}
 
 \item{params}{A list of parameters to be passed to xgboost function}
 
-\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{120}}
+\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{100}}
+
+\item{nrounds_final}{Number of trees (rounds) used in to train the final model. Defaults to \code{500}}
 
 \item{n_iter}{When \code{tune = TRUE}, this indicates how many samples to draw
-during gridsearch to use. Defaults to \code{8} (increase this number in sensitive projects).}
+during gridsearch to use. Defaults to \code{25} (increase this number in sensitive surveys).}
 
 \item{nthread}{Number of htreads used in the computation. Defaults to \code{1}, but users are
 encourage to increase this number to speed up computations (the limit is the actual number
@@ -60,6 +63,7 @@ A list of class \code{xgbp} with the following items
 \item \code{model} -- The trained \code{xgboost} model
 \item \code{data} -- GBP datamatrix used to train the model
 \item \code{nrounds} -- Number of rounds used to train the model
+\item \code{nrounds_final} -- Number of rounds used to train the final model
 \item \code{census} -- Census data used to poststratify results
 \item \code{census_count} -- Variable in the \code{census} object indicanting the raw number
 or proportion of individuals in a given stratum

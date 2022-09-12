@@ -16,12 +16,13 @@
 #' the function call
 #' @param dep_var Dependent variable. Must be `character` or `factor`
 #' @param seed A seed for replication. Defaults to `44`
-#' @param tune Should the XGBP tune the parameters with randomized grid search? Defaults to `TRUE`, in which
-#' case `params` argument is ignored
+#' @param tune Should the XGBP tune the parameters with randomized grid search? Defaults to `FALSE`, in which
+#' case `params` argument is used
 #' @param params A list of parameters to be passed to xgboost function
 #' @param nrounds Number of trees (rounds) used in to train the model. Defaults to `100`
+#' @param nrounds_final Number of trees (rounds) used in to train the final model. Defaults to `500`
 #' @param n_iter When `tune = TRUE`, this indicates how many samples to draw
-#' during gridsearch to use. Defaults to `10` (increase this number in sensitive surveys).
+#' during gridsearch to use. Defaults to `25` (increase this number in sensitive surveys).
 #' @param nthread Number of htreads used in the computation. Defaults to `1`, but users are
 #' encourage to increase this number to speed up computations (the limit is the actual number
 #' of threads available at your computer)
@@ -32,6 +33,7 @@
 #' * `model` -- The trained `xgboost` model
 #' * `data` -- GBP datamatrix used to train the model
 #' * `nrounds` -- Number of rounds used to train the model
+#' * `nrounds_final` -- Number of rounds used to train the final model
 #' * `census` -- Census data used to poststratify results
 #' * `census_count` -- Variable in the `census` object indicanting the raw number
 #' or proportion of individuals in a given stratum
@@ -48,8 +50,8 @@
 #' @export
 
 xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
-                 seed = 44, tune = TRUE, params = NULL, nrounds = 100,
-                 n_iter = 10, nthread = 1, verbose = TRUE){
+                 seed = 44, tune = FALSE, params = NULL, nrounds = 100,
+                 nrounds_final = 500, n_iter = 25, nthread = 1, verbose = TRUE){
 
 
   # Check inputs
@@ -108,7 +110,6 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
                      nthread = nthread, n_iter = n_iter, seed = seed)
 
     params <- res$params
-    nrounds <- res$nrounds
 
   } else if (is.null(params)) {
 
@@ -123,9 +124,9 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
   if(verbose) cli::cli_progress_step("Model training")
   mod <- xgboost::xgboost(data = dados,
                           params = params,
-                          nrounds = nrounds,
+                          nrounds = nrounds_final,
                           nthread = nthread,
-                          early_stopping_rounds = 20,
+                          early_stopping_rounds = 15,
                           verbose = 0,
                           eval_metric = "mlogloss")
 
