@@ -147,7 +147,7 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     dplyr::rename(cat = "name", est = "value", n_count = {{ census_count }})
 
   # Create the output
-  res <- list(estimates = res, model = mod, data = dados, nrounds = nrounds,
+  res <- list(estimates = res, model = mod, params = params, data = dados, nrounds = nrounds,
               census = census, census_count = rlang::quo_name(rlang::enquo(census_count)),
               covars_matrix = est_mt, dep_var = dep, seed = seed)
   class(res) <- c("xgbp")
