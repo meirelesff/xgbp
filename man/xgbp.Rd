@@ -13,7 +13,7 @@ xgbp(
   seed = 44,
   tune = FALSE,
   params = NULL,
-  nrounds = 100,
+  nrounds = 80,
   nrounds_final = 500,
   n_iter = 25,
   nthread = 1,
@@ -43,7 +43,7 @@ case \code{params} argument is used}
 
 \item{params}{A list of parameters to be passed to xgboost function}
 
-\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{100}}
+\item{nrounds}{Number of trees (rounds) used in to train the model. Defaults to \code{80}}
 
 \item{nrounds_final}{Number of trees (rounds) used in to train the final model. Defaults to \code{500}}
 

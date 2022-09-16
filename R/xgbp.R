@@ -113,10 +113,14 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
 
   } else if (is.null(params)) {
 
+    # Bullet proof default
     params <- list(objective = "multi:softprob",
                    num_class = length(unique(dep)),
-                   max.depth = 6, eta = 0.3,
-                   subsample = 0.95,
+                   max.depth = 6,
+                   eta = 0.15,
+                   colsample_bytree = 1,
+                   lambda = 1,
+                   subsample = 0.9,
                    min_child_weight = 1)
   }
 

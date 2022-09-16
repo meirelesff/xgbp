@@ -29,11 +29,13 @@ tune_xgbp <- function(survey, ..., dep_var = NULL, nrounds = 100, nthread = 1, n
   set.seed(seed)
   mod_grid <- expand.grid(
     eta = seq(0.001, 0.3, by = 0.05),
-    max_depth = 4:7,
+    max_depth = 3:8,
     gamma = 0:5,
+    colsample_bytree = seq(0.95, 1, by = 0.01),
+    lambda = seq(0.9, 1, by = 0.01),
     num_class = length(unique(dep_var)),
     min_child_weight = seq(1, 9, by = 1),
-    subsample = seq(0.85, 0.95, by = 0.05)
+    subsample = seq(0.85, 1, by = 0.05)
   ) %>%
     dplyr::slice_sample(n = n_iter)
 
