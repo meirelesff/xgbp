@@ -116,13 +116,13 @@ xgbp <- function(survey, census, census_count, ..., dep_var = NULL,
     # Bullet proof default
     params <- list(objective = "multi:softprob",
                    num_class = length(unique(dep)),
-                   max.depth = 3,
-                   gamma = 2,
-                   eta = 0.2,
-                   colsample_bytree = 0.98,
-                   lambda = 1,
-                   subsample = 0.85,
-                   min_child_weight = 7)
+                   max.depth = 4,
+                   gamma = 3,
+                   eta = 0.25,
+                   colsample_bytree = 0.96,
+                   lambda = 0.92,
+                   subsample = 0.95,
+                   min_child_weight = 4)
   }
 
   # Train the model
